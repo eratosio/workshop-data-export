@@ -140,4 +140,4 @@ for idx in range(threeHourly):
     rainfall_grid_20_year_df[datetime.datetime.utcfromtimestamp(forecast_time[idx]).strftime('%Y-%m-%dT%H:%M:%SZ')] = forecast_data
 
 print(rainfall_grid_20_year_df)
-rainfall_grid_20_year_df.to_file('data/forecast/24_hour_forestfueldrynessforecastau6km.geojson', driver='GeoJSON')
+rainfall_grid_20_year_df.to_file('data/forecast/geojson/24_hour_forestfueldrynessforecastau6km.geojson', driver='GeoJSON')
