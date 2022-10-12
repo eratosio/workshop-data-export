@@ -36,7 +36,6 @@ eadapter = Adapter(ecreds)
 bottomLeftPoint = 'POINT(142.180431 -38.189593)'
 topRightPoint = 'POINT(149.271033 -34.598160)'
 
-
 ## Visualise Data
 bottomLeftPoint_shape = wkt.loads(bottomLeftPoint)
 topRightPoint_shape = wkt.loads(topRightPoint)
@@ -46,4 +45,9 @@ min_lon = bottomLeftPoint_shape.x
 max_lat = topRightPoint_shape.y
 max_lon = topRightPoint_shape.x
 
+generated_lons = np.random.uniform(low=min_lon, high=max_lon, size=50)
+
+generated_lats = np.random.uniform(low=min_lat, high=max_lat, size=50)
+
+generated_morgages = np.random.uniform(low=10000, high=10000000, size=50)
 

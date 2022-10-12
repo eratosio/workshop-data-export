@@ -14,14 +14,15 @@ from matplotlib import cm
 #Wrap it into a function, ern, max min values , startTime,endTime)
 #Hourly list, 3hourly list
 
-block_ern_list = ['ern:e-pn.io:resource:eratos.blocks.bom.adfd.dailymeanprecipforecastau6km',
+block_ern_list = ['ern:e-pn.io:resource:eratos.blocks.bom.adfd.forestfueldrynessforecastau6km',
 'ern:e-pn.io:resource:eratos.blocks.bom.adfd.3hourlythunderstormforecastau6km',
 'ern:e-pn.io:resource:eratos.blocks.bom.adfd.hourlywindspeedforecastau6km',
 'ern:e-pn.io:resource:eratos.blocks.bom.adfd.3hourlymeanprecipforecastau6km']
-var_list = ['DailyPrecip_SFC','WxThunderstorms_SFC','WindOnHourMagKmh_SFC','Precip_SFC']
+var_list = ['DF_SFC','WxThunderstorms_SFC','WindOnHourMagKmh_SFC','Precip_SFC']
 
-list_idx = 0
-minRange, maxRange = 0, 30# Color scale constants
+list_idx = 3
+
+minRange, maxRange = 0, 60# Color scale constants
 
 var = var_list[list_idx]
 ern_string_spilt = block_ern_list[list_idx].split('.')
@@ -37,8 +38,8 @@ ga = res.data().gapi()
 print(dict.keys(ga.variables()))
 
 
-Start = 0
-threeHourly = 5
+Start = 8
+threeHourly = 7
 Hourly = 23
 forecast_time = ga.get_subset_as_array('time')
 lats = ga.get_subset_as_array('latitude')
@@ -46,7 +47,9 @@ lons = ga.get_subset_as_array('longitude')
 raw_values = ga.get_subset_as_array(var, starts=[Start,0,0], ends=[Start+threeHourly,-1,-1])
 for i in range(threeHourly):
     print(np.max(raw_values[i]))
-#exit()
+
+
+exit()
 # rasterio expects top-left orientation
 #print(raw_values)
 

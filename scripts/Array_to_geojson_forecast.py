@@ -28,7 +28,6 @@ import datetime
 
 creds_path = r"C:\Users\Quinten\Documents\Eratos_tok\mycreds.json"
 
-
 # Opening JSON file
 f = open(creds_path)
   
