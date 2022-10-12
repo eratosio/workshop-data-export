@@ -23,8 +23,10 @@ from datetime import date
 import geopandas as gpd
 from shapely.geometry import box
 from shapely import wkt
+import os
 
-creds_path = r"C:\Users\Quinten\Documents\Eratos_tok\mycreds.json"
+dirname = os.path.dirname(__file__)
+creds_path = os.path.abspath(os.path.join(dirname, '..', 'mycreds.json'))
 
 
 # Opening JSON file
