@@ -16,8 +16,10 @@ import geopandas as gpd
 import numpy as np
 import datetime
 import json
+import os
 
-creds_path = r"C:\Users\Quinten\Documents\Eratos_tok\mycreds.json"
+dirname = os.path.dirname(__file__)
+creds_path = os.path.abspath(os.path.join(dirname, '..', 'mycreds.json'))
 
 
 # Opening JSON file
