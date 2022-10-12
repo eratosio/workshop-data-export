@@ -16,6 +16,7 @@ import geopandas as gpd
 import numpy as np
 import datetime
 import json
+import pandas as pd
 
 creds_path = r"C:\Users\Quinten\Documents\Eratos_tok\mycreds.json"
 
@@ -51,3 +52,10 @@ generated_lats = np.random.uniform(low=min_lat, high=max_lat, size=50)
 
 generated_morgages = np.random.uniform(low=10000, high=10000000, size=50)
 
+df = pd.DataFrame()
+
+df['lons'] = generated_lons
+df['lats'] = generated_lats
+df['morgages'] = generated_morgages
+
+df.to_csv('data/    morgage_data.csv')
