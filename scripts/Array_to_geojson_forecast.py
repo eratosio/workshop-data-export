@@ -45,12 +45,13 @@ eadapter = Adapter(ecreds)
 block_ern_list = ['ern:e-pn.io:resource:eratos.blocks.bom.adfd.forestfueldrynessforecastau6km',
 'ern:e-pn.io:resource:eratos.blocks.bom.adfd.3hourlythunderstormforecastau6km',
 'ern:e-pn.io:resource:eratos.blocks.bom.adfd.hourlywindspeedforecastau6km',
-'ern:e-pn.io:resource:eratos.blocks.bom.adfd.3hourlymeanprecipforecastau6km']
-var_list = ['DF_SFC','WxThunderstorms_SFC','WindOnHourMagKmh_SFC','Precip_SFC']
+'ern:e-pn.io:resource:eratos.blocks.bom.adfd.3hourlymeanprecipforecastau6km',
+'ern:e-pn.io:resource:eratos.blocks.bom.adfd.hourlywinddirectionforecastau6km']
+var_list = ['DF_SFC','WxThunderstorms_SFC','WindOnHourMagKmh_SFC','Precip_SFC','Wind_Dir_SFC']
 
-list_idx = 2
+list_idx = 4
 
-var = var_list[list_idx]
+
 
 ern_string_spilt = block_ern_list[list_idx].split('.')
 #Request acccess to the data resource in Eratos
@@ -59,6 +60,9 @@ e_data = eadapter.Resource(ern=block_ern_list[list_idx])
 gridded_e_data = e_data.data().gapi()
 
 print(dict.keys(gridded_e_data.variables()))
+
+
+var = var_list[list_idx]
 
 threeHourly = 7
 Hourly = 23
@@ -70,15 +74,10 @@ forecast_time = gridded_e_data.get_subset_as_array('time')
 startDate = datetime.datetime.utcfromtimestamp(forecast_time[Start]).strftime('%Y-%m-%d_%H-%M-%S')
 endDate = datetime.datetime.utcfromtimestamp(forecast_time[Start+threeHourly]).strftime('%Y-%m-%d_%H-%M-%S')
 
-
 print(startDate,endDate)
 
 bottomLeftPoint = 'POINT(142.180431 -38.189593)'
 topRightPoint = 'POINT(149.271033 -34.598160)'
-
-## Extract Data
-
-#extracted_data = gridded_e_data.get_3d_subset_as_array(var,startDate,endDate,bottomLeftPoint,topRightPoint)
 
 ## Visualise Data
 bottomLeftPoint_shape = wkt.loads(bottomLeftPoint)
