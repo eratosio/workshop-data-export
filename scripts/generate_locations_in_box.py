@@ -46,16 +46,28 @@ min_lon = bottomLeftPoint_shape.x
 max_lat = topRightPoint_shape.y
 max_lon = topRightPoint_shape.x
 
-generated_lons = np.random.uniform(low=min_lon, high=max_lon, size=50)
+size = 10000
 
-generated_lats = np.random.uniform(low=min_lat, high=max_lat, size=50)
+generated_lons = np.random.uniform(low=min_lon, high=max_lon, size=size)
 
-generated_morgages = np.random.uniform(low=10000, high=10000000, size=50)
+generated_lats = np.random.uniform(low=min_lat, high=max_lat, size=size)
+
+generated_morgages = np.random.uniform(low=10000, high=10000000, size=size)
+
+generated_fire_risk = np.random.uniform(low=0, high=1, size=size)
+generated_frost_risk = np.random.uniform(low=0, high=1, size=size)
+generated_storm_risk = np.random.uniform(low=0, high=1, size=size)
+generated_flood_risk = np.random.uniform(low=0, high=1, size=size)
 
 df = pd.DataFrame()
 
 df['lons'] = generated_lons
 df['lats'] = generated_lats
 df['morgages'] = generated_morgages
+df['fire_risk'] = generated_fire_risk
+df['frost_risk'] = generated_frost_risk
+df['storm_risk'] = generated_storm_risk
+df['flood_risk'] = generated_flood_risk
 
-df.to_csv('data/    morgage_data.csv')
+
+df.to_csv('data/morgage_data.csv')
