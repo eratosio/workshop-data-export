@@ -25,9 +25,7 @@ from shapely.geometry import box
 from shapely import wkt
 import os
 
-dirname = os.path.dirname(__file__)
-creds_path = os.path.abspath(os.path.join(dirname, '..', 'mycreds.json'))
-
+creds_path = r"C:\Users\Quinten\Documents\Eratos_tok\mycreds.json"
 
 
 # Opening JSON file
@@ -44,13 +42,11 @@ ecreds = AccessTokenCreds(
 eadapter = Adapter(ecreds)
 
 #Request acccess to the data resource in Eratos
-e_data = eadapter.Resource(ern='ern:e-pn.io:resource:eratos.blocks.bom.adfd.forestfueldrynessforecastau6km')
+e_data = eadapter.Resource(ern='ern:e-pn.io:resource:eratos.blocks.silo.dailyrainfall')
 #access the gridded data via the gridded data adapter:
 gridded_e_data = e_data.data().gapi()
 
 print(dict.keys(gridded_e_data.variables()))
-
-exit()
 
 ## Define Query Parameters
 startDate = "2001-01-01"
@@ -61,7 +57,7 @@ topRightPoint = 'POINT(149.271033 -34.598160)'
 
 ## Extract Data
 print("Loading Data.")
-extracted_data = gridded_hist_rainfall_data.get_3d_subset_as_array(var,startDate,endDate,bottomLeftPoint,topRightPoint)
+extracted_data = gridded_e_data.get_3d_subset_as_array(var,startDate,endDate,bottomLeftPoint,topRightPoint)
 
 
 ## Visualise Data
@@ -73,8 +69,8 @@ min_lon = bottomLeftPoint_shape.x
 max_lat = topRightPoint_shape.y
 max_lon = topRightPoint_shape.x
 
-lats = gridded_hist_rainfall_data.get_subset_as_array('lat')
-lons = gridded_hist_rainfall_data.get_subset_as_array('lon')
+lats = gridded_e_data.get_subset_as_array('lat')
+lons = gridded_e_data.get_subset_as_array('lon')
 spacingLat, spacingLon = lats[1]-lats[0], lons[1]-lons[0]
 minLatIdx, maxLatIdx = np.argmin(np.abs(lats-min_lat)), np.argmin(np.abs(lats-max_lat))
 minLonIdx, maxLonIdx = np.argmin(np.abs(lons-min_lon)), np.argmin(np.abs(lons-max_lon))
@@ -104,8 +100,12 @@ for i in range(len(grid_lats)-1):
     id.append(count)
     count+= 1
 
-rainfall_grid_20_year_df = gpd.GeoDataFrame(geometry=poly_list)    
-rainfall_grid_20_year_df['id'] =  id
+
+
+time = []
+cum_sum_rainfall = []
+repeat_poly_list = []
+repeat_id_list = []
 
 count = 0
 for year in date_range_years:
@@ -116,18 +116,31 @@ for year in date_range_years:
 
     #Extract year out of full data vector
     year_arr = extracted_data[count:count+year_delta.days]
-    print(year_arr.shape)
+    
+    #print(year_arr.shape)
     # add length of year (365,366) to count so next loop pulls out the following year
     count += year_delta.days
     
     grid = np.sum(year_arr,axis=0)
+    #print(np.max(grid))
+    
     grid[grid < 0] = np.nan
-    print(grid.shape)
+    #print(grid.shape)
+    year_list = [year]*len(grid.flatten())
+    
+    cum_sum_rainfall.extend(grid.flatten())
+    time.extend(year_list)
+    repeat_poly_list.extend(poly_list)
+    repeat_id_list.extend(id)
 
-    annual_rainfall = grid.flatten()
 
-    print(grid[0,0],annual_rainfall[0])
-    rainfall_grid_20_year_df[year] = annual_rainfall
 
-print(rainfall_grid_20_year_df)
-rainfall_grid_20_year_df.to_file('data/20_year_cummalitve_rainfall.geojson', driver='GeoJSON')
+rainfall_grid_20_year_df = gpd.GeoDataFrame(geometry=repeat_poly_list)    
+rainfall_grid_20_year_df['id'] =  repeat_id_list
+rainfall_grid_20_year_df['year'] =  time
+rainfall_grid_20_year_df['Total_Rainfall'] =  cum_sum_rainfall
+
+
+#print(rainfall_grid_20_year_df)
+rainfall_grid_20_year_df.to_file('data/climate_data/2001_2021_yearly_cummalitve_rainfall.geojson', driver='GeoJSON')
+

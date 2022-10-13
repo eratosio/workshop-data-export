@@ -153,6 +153,8 @@ for idx , decade in enumerate(future_decades):
     print(date_range_years)
     geo_dataframe[decade] = geo_dataframe[date_range_years].mean(axis=1)
 
+    
+
 print(geo_dataframe.head()) 
 
 geo_dataframe.to_file('data/2010_to_2070_projected_decadal_days_above_35.geojson', driver='GeoJSON')

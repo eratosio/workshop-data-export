@@ -25,8 +25,7 @@ from shapely.geometry import box
 from shapely import wkt
 import os
 
-dirname = os.path.dirname(__file__)
-creds_path = os.path.abspath(os.path.join(dirname, '..', 'mycreds.json'))
+creds_path = r"C:\Users\Quinten\Documents\Eratos_tok\mycreds.json"
 
 
 # Opening JSON file
@@ -114,7 +113,7 @@ geo_dataframe = gpd.GeoDataFrame(geometry=poly_list)
 geo_dataframe['id'] =  id
 
 count = 0
-
+max_list = []
 for date_val in date_range:
         #Work out how many days in a year
         d0 = date(int(date_val), 1, 1)
@@ -126,11 +125,11 @@ for date_val in date_range:
         
         count += year_delta.days
         grid = np.sum(bool_arr,axis=0)
-        
+        max_list.append(np.max(grid))
         annual_days_above = grid.flatten()
         geo_dataframe[date_val] = annual_days_above
 
-
+print('Max',np.max(max_list))
 startDate = "1980-01-01"
 endDate = "2019-12-31"
 
